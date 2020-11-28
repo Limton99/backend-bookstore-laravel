@@ -39,6 +39,13 @@
                         </select>
                     </div>
                     <div class="form-group">
+                        <label for="sel2">Эксклюзив</label>
+                        <select class="form-control" id="sel2" name="exclusive">
+                            <option value=1>Да</option>
+                            <option value=0>Нет</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <input type="file" class="form-control-file" id="image" name="image">
                     </div>
 

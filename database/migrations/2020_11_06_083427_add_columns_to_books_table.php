@@ -14,9 +14,9 @@ class AddColumnsToBooksTable extends Migration
     public function up()
     {
         Schema::table('books', function (Blueprint $table) {
-            $table->boolean("exclusive");
-            $table->boolean("popular");
-            $table->boolean("new");
+            $table->boolean("exclusive")->default(false);
+            $table->boolean("popular")->default(false);
+            $table->boolean("new")->default(true);
         });
     }
 

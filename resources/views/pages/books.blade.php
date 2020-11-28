@@ -12,6 +12,7 @@
             <th scope="col">Title</th>
             <th scope="col">Price</th>
             <th scope="col">Count</th>
+            <th scope="col">Views</th>
             <th scope="col">Date</th>
             <th scope="col"></th>
 
@@ -26,6 +27,7 @@
             <td>{{$book->title}}</td>
             <td>{{$book->price}}$</td>
             <td>{{$book->count}}</td>
+            <td>{{$book->views}}</td>
             <td>{{date_format($book->created_at, 'jS M Y')}}</td>
             <td class="buttons">
                 <button type="button"

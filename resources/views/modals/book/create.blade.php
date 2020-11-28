@@ -45,20 +45,6 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="sel3">Популярный</label>
-                        <select class="form-control" id="sel3" name="popular">
-                            <option value=1>Да</option>
-                            <option value=0>Нет</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="sel4">Новый</label>
-                        <select class="form-control" id="sel4" name="new">
-                            <option value=1>Да</option>
-                            <option value=0>Нет</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Название</label>
 
                         <input type="file" class="form-control-file" id="image" name="image">

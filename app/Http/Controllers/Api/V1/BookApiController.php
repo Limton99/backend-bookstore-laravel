@@ -28,7 +28,7 @@ class BookApiController extends Controller
         return response($this->bookService->getPopular());
     }
 
-    public function new() {
+    public function new () {
         return response($this->bookService->getNew());
     }
 

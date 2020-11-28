@@ -25,8 +25,6 @@ class BookServiceImpl implements BookService
             $book->count = $request->get("count");
             $book->price = $request->get("price");
             $book->exclusive = $request->get("exclusive");
-            $book->popular = $request->get("popular");
-            $book->new = $request->get("new");
 
             $file = Storage::putFile('images', $request->file('image'));
             $book->image = $file;
@@ -51,9 +49,12 @@ class BookServiceImpl implements BookService
         $category = $book->category()
             ->where("name", $request->get("category"))->exists();
         $book->title = $request->get("title");
-        $book->title = $request->get("description");
-        $book->title = $request->get("count");
-        $book->title = $request->get("price");
+        $book->description = $request->get("description");
+        $book->count = $request->get("count");
+        $book->price = $request->get("price");
+        $book->exclusive = $request->get("exclusive");
+        $book->save();
+        $book->category()->sync($request->get('category_id'));
 
 //        DB::table("category_books")->update([
 //            "category_id" => $category->id,
@@ -83,7 +84,14 @@ class BookServiceImpl implements BookService
 
     public function getOne($id)
     {
-        return Book::with("category")->findOrFail($id);
+        $book = Book::with("category")->findOrFail($id);
+        $book->views += 1;
+        if($book->views >= 20) {
+            $book->popular = 1;
+        }
+
+        $book->save();
+        return $book;
     }
 
     public function delete($id)

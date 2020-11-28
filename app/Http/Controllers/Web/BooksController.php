@@ -14,7 +14,7 @@ class BooksController extends Controller
 {
 
     public function index() {
-        $books = Book::with('category')->simplePaginate(5);
+        $books = Book::with('category')->simplePaginate(10);
         return view('pages.books', ['books'=>$books, 'categories'=>Category::all()])
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
@@ -27,8 +27,6 @@ class BooksController extends Controller
             $book->count = $request->input("count");
             $book->price = $request->input("price");
             $book->exclusive = $request->input("exclusive");
-            $book->popular = $request->input("popular");
-            $book->new = $request->input("new");
 
             $file = Storage::putFile('images', $request->file('image'));
             $book->image = $file;
@@ -58,8 +56,6 @@ class BooksController extends Controller
             $book->count = $request->input("count");
             $book->price = $request->input("price");
             $book->exclusive = $request->input("exclusive");
-            $book->popular = $request->input("popular");
-            $book->new = $request->input("new");
 
             $file = Storage::putFile('images', $request->file('image'));
             $book->image = $file;
