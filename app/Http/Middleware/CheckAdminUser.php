@@ -21,10 +21,7 @@ class CheckAdminUser
         if(Auth::user() && Auth::user()->isAdmin()) {
             return $next($request);
         }
-        else {
-            return redirect()->route('logout');
-//            return response("Access Forbidden", 403);
-        }
 
+        return redirect('/login')->with('status', 'This account is not admin permissions!!!');;
     }
 }

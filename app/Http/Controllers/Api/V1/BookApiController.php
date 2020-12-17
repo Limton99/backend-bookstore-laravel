@@ -44,6 +44,14 @@ class BookApiController extends Controller
         return response($this->bookService->update($request, $id));
     }
 
+    public function search(BookRequest $request) {
+        return response($this->bookService->search($request));
+    }
+
+    public function sort(BookRequest $request) {
+        return response($this->bookService->sortByCategory($request));
+    }
+
     public function delete($id) {
         return response($this->bookService->delete($id));
     }

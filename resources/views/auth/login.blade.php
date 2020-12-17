@@ -14,6 +14,12 @@
                         {{ session()->get('error') }}
                     </div>
                 @endif
+
+                @if (session('status'))
+                    <div class="alert alert-danger">
+                        {{ session('status') }}
+                    </div>
+                @endif
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf

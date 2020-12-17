@@ -84,7 +84,7 @@ class BookServiceImpl implements BookService
 
     public function getOne($id)
     {
-        $book = Book::with("category")->findOrFail($id);
+        $book = Book::with("category", "comment")->findOrFail($id);
         $book->views += 1;
         if($book->views >= 20) {
             $book->popular = 1;
@@ -104,11 +104,25 @@ class BookServiceImpl implements BookService
 
     public function sortByCategory(BookRequest $request)
     {
-        // TODO: Implement sortByCategory() method.
+        $category_id = $request->get('category_id');
+
+//        dd($category_id);
+
+        $books = Book::with('category')->whereHas('category', function ($q) use ($category_id) {
+            $q->where('id', $category_id);
+        })->get();
+
+        return $books;
     }
 
     public function search(BookRequest $request)
     {
-        // TODO: Implement search() method.
+        $search = $request->get('search');
+
+        $book = Book::with("category")
+            ->where('title', 'like', '%'.$search.'%')
+            ->get();
+
+        return $book;
     }
 }

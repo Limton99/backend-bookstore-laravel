@@ -15,9 +15,12 @@ class CommentServiceImpl implements CommentService
 
     public function create(Request $request)
     {
+        $user = User::findOrFail(Auth::id());
+//        dd($user);
         $comment = new Comment();
         $comment->comment = $request->get("comment");
         $comment->user_id = Auth::id();
+        $comment->author = $user->name;
         $comment->book_id = $request->get("book_id");
 
         $comment->save();

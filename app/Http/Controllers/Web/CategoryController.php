@@ -22,7 +22,7 @@ class CategoryController extends Controller
         $category->save();
 
 
-        return redirect()->route('categories');
+        return redirect()->route('categories')->with('status', 'Comment is successful added!!!');
 
     }
 

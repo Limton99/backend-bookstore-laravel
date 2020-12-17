@@ -39,7 +39,7 @@ class BooksController extends Controller
 //                "book_id" => $book->id
 //            ]);
 
-            return redirect()->route('books');
+            return redirect()->route('books')->with('status', 'Book is successful added!!!');
         }
         else {
             return redirect()->route('books');

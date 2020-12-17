@@ -46,6 +46,8 @@ Route::group(['prefix'=>'books'], function() {
     Route::get('popular', [BookApiController::class, 'popular']);
     Route::get('new', [BookApiController::class, 'new']);
     Route::get('one/{id}', [BookApiController::class, 'show']);
+    Route::get('search', [BookApiController::class, 'search']);
+    Route::get('sort', [BookApiController::class, 'sort']);
 });
 
 Route::group(['prefix'=>'categories'], function() {
@@ -64,7 +66,7 @@ Route::group(['middleware' => ['auth:api']], function() {
 
    Route::group(['prefix'=>'cart'], function() {
        Route::get('show', [CartController::class, 'index']);
-       Route::get('addToCart/{id}', [CartController::class, 'addToCart']);
+       Route::post('addToCart', [CartController::class, 'addToCart']);
        Route::patch('update', [CartController::class, 'update']);
        Route::delete('delete', [CartController::class, 'remove']);
    });
@@ -75,7 +77,6 @@ Route::group(['prefix'=>'comments'], function() {
     Route::get('one/{id}', [CommentApiController::class, 'show']);
 });
 
-//Route::post('/createasd', [CategoryApiController::class, 'store']);
 
 
 

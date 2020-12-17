@@ -15,12 +15,12 @@ class CartController extends Controller
         $this->cartService = $cartService;
     }
 
-    public function index() {
-        return response($this->cartService->showCart());
+    public function index(Request $request) {
+        return response($this->cartService->showCart($request));
     }
 
-    public function addToCart($id) {
-        return response($this->cartService->addToCart($id));
+    public function addToCart(Request $request) {
+        return response($this->cartService->addToCart($request));
     }
 
     public function update(Request $request) {

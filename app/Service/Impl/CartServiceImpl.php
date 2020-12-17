@@ -5,69 +5,41 @@ namespace App\Service\Impl;
 
 
 use App\Models\Books\Book;
+use App\Models\Books\Cart;
 use App\Service\CartService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use MongoDB\Driver\Session;
 
 class CartServiceImpl implements CartService
 {
 
-    public function showCart()
+    public function showCart(Request $request)
     {
-        return session()->get('cart');
+        $user_id = $request->get('user_id');
+//        dd($user_id);
+        return Cart::with('user')->where('user_id', Auth::id())->get();
     }
 
-    public function addToCart($id)
+    public function addToCart(Request $request)
     {
-        $book = Book::find($id);
-        if(!$book) {
-            abort(404);
-        }
+        $book_id = $request->get('book_id');
 
-        $cart = session()->get('cart');
+        $book = Book::findOrFail($book_id);
 
-        if(!$cart) {
-            $id = [
-                'title'=>$book->title,
-                'quantity'=>1,
-                'price'=>$book->price,
-                'image'=>$book->image
-            ];
 
-            session()->put('cart', $cart);
 
-//            return $cart;
-            dd($cart);
-            return [
-                "success",
-                "Data"=>session()->get('cart'),
-            ];
-        }
+        $cart = new Cart();
+        $cart->bookTitle = $book->title;
+        $cart->bookCount = $book->count;
+        $cart->bookPrice = $book->price;
+        $cart->book_id = $book->id;
 
-        if(isset($cart[$id])) {
-            $cart[$id]['quantity']++;
+        $cart->user_id = Auth::id();
 
-            session()->put('cart', $cart);
+        $cart->save();
 
-            return [
-                "success",
-                "Data"=>$cart
-            ];
-        }
-
-        $cart[$id] = [
-            'name'=>$book->title,
-            'quantity'=>1,
-            'price'=>$book->price,
-            'image'=>$book->image
-        ];
-
-        session()->put('cart', $cart);
-
-        return [
-            "success",
-            "Data"=>$cart
-        ];
+        return Cart::with('user')->where('user_id', Auth::id())->get();
     }
 
     public function updateCart(Request $request)

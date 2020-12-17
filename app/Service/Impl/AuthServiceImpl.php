@@ -25,12 +25,16 @@ class AuthServiceImpl implements AuthService
 
             $token = $user->createToken($user->email.'-'.now());
 
-            return $token->accessToken;
+            return $token;
         }
     }
 
     public function register(Request $request)
     {
+        if(User::where('email', $request->email)->first()) {
+            throw new \Exception('Пользователь с таким email занят!!!');
+        }
+
         $request->validate([
             'name' => 'required',
             'email' => 'required|email',

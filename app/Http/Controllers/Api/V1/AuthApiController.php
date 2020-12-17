@@ -20,7 +20,12 @@ class AuthApiController extends Controller
     }
 
     public function register(Request $request) {
-        return response($this->authService->register($request));
+        try {
+            return response($this->authService->register($request), 200);
+        } catch (\Exception $e) {
+            return response($e->getMessage(), 409);
+        }
+
     }
 
     public function logout() {

@@ -1,6 +1,11 @@
 @extends('layout.app')
 @section('content')
 
+    @if (session('status'))
+        <div class="alert alert-success">
+            {{ session('status') }}
+        </div>
+    @endif
     <h3>Книги</h3>
     <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#createBook">Добавить книгу</button>
     <p></p>
