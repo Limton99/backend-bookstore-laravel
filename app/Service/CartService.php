@@ -10,8 +10,8 @@ use Illuminate\Http\Request;
 
 interface CartService
 {
-    public function showCart(Request $request);
-    public function addToCart(Request $request);
+    public function showCart();
+    public function addToCart($id);
     public function updateCart(Request $request);
-    public function removeFromCart(Request $request);
+    public function removeFromCart($id);
 }

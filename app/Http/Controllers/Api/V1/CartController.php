@@ -15,19 +15,19 @@ class CartController extends Controller
         $this->cartService = $cartService;
     }
 
-    public function index(Request $request) {
-        return response($this->cartService->showCart($request));
+    public function index() {
+        return response($this->cartService->showCart());
     }
 
-    public function addToCart(Request $request) {
-        return response($this->cartService->addToCart($request));
+    public function addToCart($id) {
+        return response($this->cartService->addToCart($id));
     }
 
     public function update(Request $request) {
         return response($this->cartService->updateCart($request));
     }
 
-    public function remove(Request $request) {
-        return response($this->cartService->removeFromCart($request));
+    public function remove($id) {
+        return response($this->cartService->removeFromCart($id));
     }
 }

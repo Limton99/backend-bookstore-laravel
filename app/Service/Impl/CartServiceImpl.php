@@ -14,20 +14,30 @@ use MongoDB\Driver\Session;
 class CartServiceImpl implements CartService
 {
 
-    public function showCart(Request $request)
+    public function showCart()
     {
-        $user_id = $request->get('user_id');
-//        dd($user_id);
-        return Cart::with('user')->where('user_id', Auth::id())->get();
+        $cart = Cart::with('user')->where('user_id', Auth::id())->get();
+        $total = 0;
+        foreach ($cart as $c) {
+            $total += $c->bookPrice;
+        }
+
+        $cart = [
+            'cart'=>$cart,
+            'total'=>$total
+        ];
+
+        return $cart;
     }
 
-    public function addToCart(Request $request)
+    public function addToCart($id)
     {
-        $book_id = $request->get('book_id');
-
-        $book = Book::findOrFail($book_id);
 
 
+        $book = Book::findOrFail($id);
+
+
+        $book->count--;
 
         $cart = new Cart();
         $cart->bookTitle = $book->title;
@@ -37,6 +47,7 @@ class CartServiceImpl implements CartService
 
         $cart->user_id = Auth::id();
 
+        $book->save();
         $cart->save();
 
         return Cart::with('user')->where('user_id', Auth::id())->get();
@@ -53,15 +64,17 @@ class CartServiceImpl implements CartService
         }
     }
 
-    public function removeFromCart(Request $request)
+    public function removeFromCart($id)
     {
-        if($request->id) {
-            $cart = session()->get('cart');
-            if(isset($cart[$request->id])) {
-                unset($cart[$request->id]);
-                session()->put('cart', $cart);
-            }
-            session()->flash('success', 'Product removed successfully');
-        }
+//        dd(Cart::findOrFail($request->get('cart_id')));
+        $cartBook = Cart::where('user_id', Auth::id())
+            ->findOrFail($id);
+
+        $book = Book::findOrFail($cartBook->book_id);
+        $book->count++;
+//        dd($book);
+
+        $book->save();
+        $cartBook->delete();
     }
 }
