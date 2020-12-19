@@ -67,7 +67,7 @@ Route::group(['middleware' => ['auth:api']], function() {
    Route::group(['prefix'=>'cart'], function() {
        Route::get('show', [CartController::class, 'index']);
        Route::post('addToCart/{id}', [CartController::class, 'addToCart']);
-       Route::patch('update', [CartController::class, 'update']);
+       Route::get('update/{id}', [CartController::class, 'update']);
        Route::get('delete/{id}', [CartController::class, 'remove']);
    });
 });

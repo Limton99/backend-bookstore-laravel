@@ -39,9 +39,21 @@ class CartServiceImpl implements CartService
 
         $book->count--;
 
+        $cart = Cart::with('user')->where('book_id', $id)->first();
+
+        if ($cart) {
+            $cart->bookCount += 1;
+            $cart->bookPrice += $book->price;
+
+            $book->save();
+            $cart->save();
+
+            return $book;
+        }
+
         $cart = new Cart();
         $cart->bookTitle = $book->title;
-        $cart->bookCount = $book->count;
+        $cart->bookCount = 1;
         $cart->bookPrice = $book->price;
         $cart->book_id = $book->id;
 
@@ -50,31 +62,38 @@ class CartServiceImpl implements CartService
         $book->save();
         $cart->save();
 
-        return Cart::with('user')->where('user_id', Auth::id())->get();
-    }
-
-    public function updateCart(Request $request)
-    {
-        if($request->id and $request->quantity)
-        {
-            $cart = session()->get('cart');
-            $cart[$request->id]["quantity"] = $request->quantity;
-            session()->put('cart', $cart);
-            session()->flash('success', 'Cart updated successfully');
-        }
+        return $book;
     }
 
     public function removeFromCart($id)
     {
-//        dd(Cart::findOrFail($request->get('cart_id')));
         $cartBook = Cart::where('user_id', Auth::id())
             ->findOrFail($id);
 
         $book = Book::findOrFail($cartBook->book_id);
-        $book->count++;
-//        dd($book);
+        $book->count+=$cartBook->bookCount;
 
         $book->save();
         $cartBook->delete();
+    }
+
+    public function removeOneFromCart($id)
+    {
+        $cartBook = Cart::where('user_id', Auth::id())
+            ->findOrFail($id);
+        $cartBook->bookCount--;
+
+        $book = Book::findOrFail($cartBook->book_id);
+        $book->count++;
+
+        $book->save();
+        $cartBook->save();
+
+
+        if ($cartBook->bookCount === 0) {
+            $cartBook->delete();
+        }
+
+        return $book;
     }
 }

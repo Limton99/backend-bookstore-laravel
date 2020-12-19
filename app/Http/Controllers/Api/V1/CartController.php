@@ -23,8 +23,8 @@ class CartController extends Controller
         return response($this->cartService->addToCart($id));
     }
 
-    public function update(Request $request) {
-        return response($this->cartService->updateCart($request));
+    public function update($id) {
+        return response($this->cartService->removeOneFromCart($id));
     }
 
     public function remove($id) {

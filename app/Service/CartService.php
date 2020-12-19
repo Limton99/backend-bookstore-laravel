@@ -12,6 +12,6 @@ interface CartService
 {
     public function showCart();
     public function addToCart($id);
-    public function updateCart(Request $request);
     public function removeFromCart($id);
+    public function removeOneFromCart($id);
 }
